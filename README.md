@@ -58,16 +58,17 @@ This describes the AI RAG (Retrieval-Augmented Generation) Server, built with Fa
 Start the FastAPI server using `uv run`:
 
 ```bash
-uv run uvicorn app.main:app --reload
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8888 --reload
 ```
+The server will start at `http://localhost:8888`.
 
-The server will start at `http://localhost:8000`.
+
 
 ## API Documentation
 
 Once the server is running, you can access the interactive API documentation (Swagger UI) at:
 
-**[http://localhost:8000/docs](http://localhost:8000/docs)**
+**[http://localhost:8888/docs](http://localhost:8888/docs)**
 
 ### Key Endpoints
 

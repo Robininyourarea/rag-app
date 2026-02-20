@@ -7,7 +7,6 @@ requires-python = ">=3.12"
 dependencies = [
     "fastapi",
     "uvicorn",
-    "langchain",
     "langchain-community",
     "langchain-google-genai",
     "langchain-huggingface",
@@ -16,5 +15,9 @@ dependencies = [
     "pymongo",
     "pypdf",
     "python-dotenv",
-    "fpdf"
+    "fpdf",
+    "python-multipart>=0.0.22",
+    "langchain>=1.2.10",
+    "langchain-mongodb>=0.11.0",
+    "langchain-classic>=1.0.1",
 ]

@@ -91,7 +91,7 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
-                bgcolor: '#ffffff',
+                bgcolor: 'background.default',
             }}
         >
             {/* Messages */}
@@ -116,7 +116,6 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                             gap: 1.5,
                         }}
                     >
-
                         {/* Bubble */}
                         <Box sx={{ maxWidth: '70%' }}>
                             {msg.role === 'assistant' ? (
@@ -126,14 +125,14 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                                         sx={{
                                             p: 1.5,
                                             bgcolor: 'transparent',
-                                            color: '#1a202c',
+                                            color: 'text.primary',
                                             lineHeight: 1.7,
                                             whiteSpace: 'pre-wrap',
                                         }}
                                     >
                                         {msg.content}
                                     </Typography>
-                                    <Typography variant="caption" sx={{ color: '#a0aec0', pl: 1.5 }}>
+                                    <Typography variant="caption" sx={{ color: 'text.disabled', pl: 1.5 }}>
                                         {formatTime(msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp))}
                                     </Typography>
                                 </Box>
@@ -143,7 +142,7 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                                         elevation={0}
                                         sx={{
                                             p: 1.5,
-                                            bgcolor: '#2B6CB0',
+                                            bgcolor: 'custom.userBubble',
                                             color: '#ffffff',
                                             borderRadius: '18px 18px 4px 18px',
                                         }}
@@ -152,7 +151,7 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                                             {msg.content}
                                         </Typography>
                                     </Paper>
-                                    <Typography variant="caption" sx={{ color: '#a0aec0', display: 'block', textAlign: 'right', pr: 1 }}>
+                                    <Typography variant="caption" sx={{ color: 'text.disabled', display: 'block', textAlign: 'right', pr: 1 }}>
                                         {formatTime(msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp))}
                                     </Typography>
                                 </Box>
@@ -164,7 +163,7 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                 {/* Loading indicator */}
                 {loading && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <Avatar sx={{ bgcolor: '#2B6CB0', width: 32, height: 32 }}>
+                        <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
                             <SmartToyIcon sx={{ fontSize: 18 }} />
                         </Avatar>
                         <Box sx={{ display: 'flex', gap: 0.5, p: 1.5 }}>
@@ -175,7 +174,7 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                                         width: 8,
                                         height: 8,
                                         borderRadius: '50%',
-                                        bgcolor: '#cbd5e0',
+                                        bgcolor: 'text.secondary',
                                         animation: 'bounce 1.2s infinite',
                                         animationDelay: `${i * 0.2}s`,
                                         '@keyframes bounce': {
@@ -196,8 +195,9 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                 sx={{
                     px: 3,
                     py: 2,
-                    borderTop: '1px solid #e2e8f0',
-                    bgcolor: '#ffffff',
+                    borderTop: '1px solid',
+                    borderColor: 'divider',
+                    bgcolor: 'background.default',
                 }}
             >
                 <Box
@@ -205,14 +205,15 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                         display: 'flex',
                         alignItems: 'center',
                         gap: 1,
-                        border: '1.5px solid #e2e8f0',
+                        border: '1.5px solid',
+                        borderColor: 'divider',
                         borderRadius: '12px',
                         px: 2,
                         py: 0.5,
-                        bgcolor: '#f8fafc',
+                        bgcolor: 'custom.inputBg',
                         '&:focus-within': {
-                            borderColor: '#2B6CB0',
-                            bgcolor: '#ffffff',
+                            borderColor: 'primary.main',
+                            bgcolor: 'background.paper',
                         },
                     }}
                 >
@@ -227,21 +228,22 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                         variant="standard"
                         InputProps={{ disableUnderline: true }}
                         sx={{
-                            '& .MuiInputBase-root': { fontSize: 14, color: '#1a202c' },
+                            '& .MuiInputBase-root': { fontSize: 14, color: 'text.primary' },
+                            '& .MuiInputBase-input::placeholder': { color: 'text.disabled', opacity: 1 },
                         }}
                     />
                     <IconButton
                         onClick={handleSend}
                         disabled={!input.trim() || loading}
                         sx={{
-                            bgcolor: input.trim() && !loading ? '#2B6CB0' : '#e2e8f0',
-                            color: input.trim() && !loading ? '#ffffff' : '#a0aec0',
+                            bgcolor: input.trim() && !loading ? 'primary.main' : 'custom.surfaceHover',
+                            color: input.trim() && !loading ? '#ffffff' : 'text.disabled',
                             width: 36,
                             height: 36,
                             flexShrink: 0,
                             transition: 'all 0.2s',
                             '&:hover': {
-                                bgcolor: input.trim() && !loading ? '#1e4e8c' : '#e2e8f0',
+                                bgcolor: input.trim() && !loading ? 'primary.dark' : 'custom.surfaceHover',
                             },
                         }}
                     >

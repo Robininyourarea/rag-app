@@ -65,8 +65,9 @@ export default function Sidebar({
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                bgcolor: '#ffffff',
-                borderRight: '1px solid #e2e8f0',
+                bgcolor: 'custom.sidebar',
+                borderRight: '1px solid',
+                borderColor: 'divider',
                 overflowY: 'hidden',
             }}
         >
@@ -80,12 +81,12 @@ export default function Sidebar({
             />
 
             {/* Logo / App name */}
-            <Box sx={{ px: 2.5, py: 2.5, flexShrink: 0 }}>
+            <Box sx={{ px: 2.5, py: 1.32, flexShrink: 0 }}>
                 <Typography
                     variant="h6"
                     sx={{
-                        fontWeight: 700,
-                        color: '#2B6CB0',
+                        fontWeight: 500,
+                        color: 'text.primary',
                         fontSize: 20,
                         letterSpacing: -0.5,
                     }}
@@ -93,26 +94,30 @@ export default function Sidebar({
                     ChatPDF
                 </Typography>
             </Box>
+            <Divider />
 
             {/* New Document button */}
-            <Box sx={{ px: 2, pb: 1.5, flexShrink: 0 }}>
+            <Box sx={{ px: 2, pb: 1.5, pt: 1.5, flexShrink: 0 }}>
                 <Button
                     fullWidth
                     variant="contained"
                     startIcon={<AddIcon />}
                     onClick={handleNewDocument}
                     sx={{
-                        bgcolor: '#2B6CB0',
-                        color: '#ffffff',
-                        borderRadius: '10px',
+                        bgcolor: 'custom.surfaceSelected',
+                        color: 'text.primary',
+                        borderRadius: '50px',
                         py: 1,
-                        fontWeight: 600,
+                        fontWeight: 500,
                         fontSize: 14,
                         textTransform: 'none',
-                        boxShadow: '0 2px 8px rgba(43,108,176,0.25)',
+                        boxShadow: 'none',
+                        border: '1px solid',
+                        borderColor: 'divider',
                         '&:hover': {
-                            bgcolor: '#1e4e8c',
-                            boxShadow: '0 4px 12px rgba(43,108,176,0.35)',
+                            bgcolor: 'custom.surfaceHover',
+                            borderColor: 'text.disabled',
+                            boxShadow: 'none',
                         },
                     }}
                 >
@@ -123,8 +128,8 @@ export default function Sidebar({
             {/* Uploaded documents */}
             {uploadedDocs.length > 0 && (
                 <>
-                    <Box sx={{ px: 2.5, pb: 0.5, flexShrink: 0 }}>
-                        <Typography variant="caption" sx={{ color: '#a0aec0', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+                    <Box sx={{ px: 2, py: 1, flexShrink: 0 }}>
+                        <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                             Documents
                         </Typography>
                     </Box>
@@ -140,24 +145,29 @@ export default function Sidebar({
                                             mx: 1,
                                             px: 1.5,
                                             py: 0.8,
-                                            '&.Mui-selected': { bgcolor: '#eff6ff', '&:hover': { bgcolor: '#dbeafe' } },
-                                            '&:hover': { bgcolor: '#f0f4ff' },
+                                            '&.Mui-selected': {
+                                                bgcolor: 'custom.surfaceSelected',
+                                                '&:hover': { bgcolor: 'custom.surfaceSelected' },
+                                            },
+                                            '&:hover': { bgcolor: 'custom.surfaceHover' },
                                         }}
                                     >
                                         <ListItemIcon sx={{ minWidth: 32 }}>
-                                            <PictureAsPdfIcon sx={{ fontSize: 18, color: '#e53e3e' }} />
+                                            <PictureAsPdfIcon sx={{ fontSize: 18, color: 'text.disabled' }} />
                                         </ListItemIcon>
                                         <ListItemText
                                             primary={doc.name}
-                                            primaryTypographyProps={{
-                                                variant: 'body2',
-                                                sx: {
-                                                    fontSize: 13,
-                                                    fontWeight: selectedDocId === doc.id ? 600 : 400,
-                                                    color: '#2d3748',
-                                                    overflow: 'hidden',
-                                                    textOverflow: 'ellipsis',
-                                                    whiteSpace: 'nowrap',
+                                            slotProps={{
+                                                primary: {
+                                                    variant: 'body2',
+                                                    sx: {
+                                                        fontSize: 13,
+                                                        fontWeight: selectedDocId === doc.id ? 600 : 400,
+                                                        color: 'text.primary',
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                    },
                                                 },
                                             }}
                                         />

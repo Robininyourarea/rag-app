@@ -56,7 +56,7 @@ function SessionGroup({
         <Box>
             <Typography
                 variant="caption"
-                sx={{ color: '#a0aec0', fontWeight: 600, px: 1.5, py: 0.5, display: 'block', textTransform: 'uppercase', letterSpacing: 0.5 }}
+                sx={{ color: 'text.disabled', fontWeight: 600, px: 1.5, py: 0.5, display: 'block', textTransform: 'uppercase', letterSpacing: 0.5 }}
             >
                 {label}
             </Typography>
@@ -72,21 +72,26 @@ function SessionGroup({
                                     mx: 0.5,
                                     px: 1.5,
                                     py: 0.8,
-                                    '&.Mui-selected': { bgcolor: '#eff6ff' },
-                                    '&:hover': { bgcolor: '#f0f4ff' },
+                                    '&.Mui-selected': {
+                                        bgcolor: 'custom.surfaceSelected',
+                                        '&:hover': { bgcolor: 'custom.surfaceSelected' },
+                                    },
+                                    '&:hover': { bgcolor: 'custom.surfaceHover' },
                                 }}
                             >
-                                <ChatBubbleOutlineIcon sx={{ fontSize: 15, color: '#a0aec0', mr: 1.2, flexShrink: 0 }} />
+                                <ChatBubbleOutlineIcon sx={{ fontSize: 15, color: 'text.secondary', mr: 1.2, flexShrink: 0 }} />
                                 <ListItemText
                                     primary={s.title}
-                                    primaryTypographyProps={{
-                                        variant: 'body2',
-                                        sx: {
-                                            color: '#374151',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis',
-                                            whiteSpace: 'nowrap',
-                                            fontSize: 13,
+                                    slotProps={{
+                                        primary: {
+                                            variant: 'body2',
+                                            sx: {
+                                                color: 'text.primary',
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                whiteSpace: 'nowrap',
+                                                fontSize: 13,
+                                            },
                                         },
                                     }}
                                 />
@@ -123,21 +128,21 @@ export default function ChatHistory({ onSelectSession, selectedSessionId }: Chat
     return (
         <Box sx={{ flex: 1, overflowY: 'auto', pb: 2 }}>
             {/* Section header */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 1.5 }}>
-                <HistoryIcon sx={{ fontSize: 16, color: '#a0aec0' }} />
-                <Typography variant="caption" sx={{ color: '#a0aec0', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+            <Box sx={{ px: 2, py: 1 }}>
+                {/* <HistoryIcon sx={{ fontSize: 16, color: 'text.disabled' }} /> */}
+                <Typography variant="caption" sx={{ color: 'text.disabled', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
                     Chat History
                 </Typography>
             </Box>
 
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-                    <CircularProgress size={20} sx={{ color: '#2B6CB0' }} />
+                    <CircularProgress size={20} sx={{ color: 'primary.main' }} />
                 </Box>
             ) : !hasHistory ? (
-                <Box sx={{ px: 2, py: 2, textAlign: 'center' }}>
-                    <Typography variant="body2" sx={{ color: '#cbd5e0', fontSize: 13 }}>
-                        No chat history yet
+                <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', py: 2 }}>
+                    <Typography variant="body2" sx={{ color: 'text.disabled', fontSize: 13 }}>
+                        chat history is empty
                     </Typography>
                 </Box>
             ) : (

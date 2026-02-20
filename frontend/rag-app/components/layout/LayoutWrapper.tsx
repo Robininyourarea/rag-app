@@ -20,7 +20,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
     } = useDocumentContext();
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh', bgcolor: '#ffffff', overflow: 'hidden' }}>
+        <Box sx={{ display: 'flex', height: '100vh', bgcolor: 'background.default', overflow: 'hidden' }}>
             {/* Sidebar */}
             <Sidebar
                 uploadedDocs={uploadedDocs}
@@ -32,7 +32,7 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
             />
 
             {/* Main content — provided by the page as children */}
-            <Box component="main" sx={{ flex: 1, display: 'flex', overflow: 'hidden', bgcolor: '#ffffff' }}>
+            <Box component="main" sx={{ flex: 1, display: 'flex', overflow: 'hidden', bgcolor: 'background.default' }}>
                 {children}
             </Box>
         </Box>
@@ -42,7 +42,9 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
 export default function LayoutWrapper({ children }: Readonly<LayoutWrapperProps>) {
     return (
         <DocumentProvider>
-            <LayoutInner>{children}</LayoutInner>
+            <LayoutInner>
+                {children}
+            </LayoutInner>
         </DocumentProvider>
     );
 }

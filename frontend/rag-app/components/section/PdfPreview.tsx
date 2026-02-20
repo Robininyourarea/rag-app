@@ -52,8 +52,9 @@ export default function PdfPreview({ document, onClose }: PdfPreviewProps) {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100%',
-                bgcolor: '#f1f5f9',
-                borderRight: '1px solid #e2e8f0',
+                bgcolor: 'background.paper',
+                borderRight: '1px solid',
+                borderColor: 'divider',
             }}
         >
             {/* Header */}
@@ -64,18 +65,19 @@ export default function PdfPreview({ document, onClose }: PdfPreviewProps) {
                     px: 2,
                     py: 1.5,
                     gap: 1,
-                    bgcolor: '#ffffff',
-                    borderBottom: '1px solid #e2e8f0',
+                    bgcolor: 'background.default',
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
                     flexShrink: 0,
                 }}
             >
-                <PictureAsPdfIcon sx={{ color: '#e53e3e', fontSize: 18 }} />
+                <PictureAsPdfIcon sx={{ color: 'text.disabled', fontSize: 18 }} />
                 <Typography
                     variant="body2"
                     sx={{
                         flex: 1,
                         fontWeight: 600,
-                        color: '#2d3748',
+                        color: 'text.primary',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
@@ -87,15 +89,15 @@ export default function PdfPreview({ document, onClose }: PdfPreviewProps) {
 
                 {/* Zoom controls */}
                 <Tooltip title="Zoom out">
-                    <IconButton size="small" onClick={zoomOut} disabled={scale <= 0.5} sx={{ color: '#718096' }}>
+                    <IconButton size="small" onClick={zoomOut} disabled={scale <= 0.5} sx={{ color: 'text.secondary' }}>
                         <ZoomOutIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
-                <Typography variant="caption" sx={{ color: '#718096', minWidth: 38, textAlign: 'center' }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary', minWidth: 38, textAlign: 'center' }}>
                     {Math.round(scale * 100)}%
                 </Typography>
                 <Tooltip title="Zoom in">
-                    <IconButton size="small" onClick={zoomIn} disabled={scale >= 2.5} sx={{ color: '#718096' }}>
+                    <IconButton size="small" onClick={zoomIn} disabled={scale >= 2.5} sx={{ color: 'text.secondary' }}>
                         <ZoomInIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
@@ -104,7 +106,7 @@ export default function PdfPreview({ document, onClose }: PdfPreviewProps) {
                 <IconButton
                     onClick={onClose}
                     size="small"
-                    sx={{ color: '#a0aec0', ml: 1, '&:hover': { color: '#4a5568' } }}
+                    sx={{ color: 'text.disabled', ml: 1, '&:hover': { color: 'text.secondary' } }}
                 >
                     <CloseIcon fontSize="small" />
                 </IconButton>
@@ -125,7 +127,7 @@ export default function PdfPreview({ document, onClose }: PdfPreviewProps) {
             >
                 {loading && (
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-                        <CircularProgress size={32} sx={{ color: '#2B6CB0' }} />
+                        <CircularProgress size={32} sx={{ color: 'primary.main' }} />
                     </Box>
                 )}
 
@@ -155,18 +157,19 @@ export default function PdfPreview({ document, onClose }: PdfPreviewProps) {
                         gap: 2,
                         px: 2,
                         py: 1.5,
-                        bgcolor: '#ffffff',
-                        borderTop: '1px solid #e2e8f0',
+                        bgcolor: 'background.default',
+                        borderTop: '1px solid',
+                        borderColor: 'divider',
                         flexShrink: 0,
                     }}
                 >
-                    <IconButton size="small" onClick={goToPrev} disabled={pageNumber <= 1} sx={{ color: '#718096' }}>
+                    <IconButton size="small" onClick={goToPrev} disabled={pageNumber <= 1} sx={{ color: 'text.secondary' }}>
                         <NavigateBeforeIcon />
                     </IconButton>
-                    <Typography variant="body2" sx={{ color: '#4a5568', fontSize: 13 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: 13 }}>
                         {pageNumber} / {numPages}
                     </Typography>
-                    <IconButton size="small" onClick={goToNext} disabled={pageNumber >= numPages} sx={{ color: '#718096' }}>
+                    <IconButton size="small" onClick={goToNext} disabled={pageNumber >= numPages} sx={{ color: 'text.secondary' }}>
                         <NavigateNextIcon />
                     </IconButton>
                 </Box>

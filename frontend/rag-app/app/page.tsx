@@ -34,7 +34,7 @@ function EmptyState({ onUpload }: { onUpload: (doc: UploadedDocument) => void })
         alignItems: 'center',
         justifyContent: 'center',
         gap: 2.5,
-        bgcolor: '#f8fafc',
+        bgcolor: 'background.default',
       }}
     >
       <input
@@ -51,16 +51,16 @@ function EmptyState({ onUpload }: { onUpload: (doc: UploadedDocument) => void })
           width: 64,
           height: 64,
           borderRadius: '50%',
-          bgcolor: '#dbeafe',
+          bgcolor: 'custom.surfaceSelected',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <UploadFileIcon sx={{ fontSize: 32, color: '#2B6CB0' }} />
+        <UploadFileIcon sx={{ fontSize: 32, color: 'primary.main' }} />
       </Box>
 
-      <Typography variant="h6" sx={{ fontWeight: 600, color: '#2d3748', fontSize: 20 }}>
+      <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary', fontSize: 20 }}>
         Add a source to get started
       </Typography>
 
@@ -71,12 +71,12 @@ function EmptyState({ onUpload }: { onUpload: (doc: UploadedDocument) => void })
           borderRadius: '999px',
           px: 4,
           py: 1,
-          borderColor: '#cbd5e0',
-          color: '#2d3748',
+          borderColor: 'divider',
+          color: 'text.primary',
           fontWeight: 600,
           textTransform: 'none',
           fontSize: 14,
-          '&:hover': { borderColor: '#2B6CB0', color: '#2B6CB0', bgcolor: '#eff6ff' },
+          '&:hover': { borderColor: 'primary.main', color: 'primary.main', bgcolor: 'custom.surfaceSelected' },
         }}
       >
         Upload a PDF
@@ -91,18 +91,19 @@ function EmptyState({ onUpload }: { onUpload: (doc: UploadedDocument) => void })
           right: 24,
           height: 52,
           borderRadius: '12px',
-          border: '1.5px solid #e2e8f0',
-          bgcolor: '#f1f5f9',
+          border: '1.5px solid',
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
           display: 'flex',
           alignItems: 'center',
           px: 2.5,
           justifyContent: 'space-between',
         }}
       >
-        <Typography variant="body2" sx={{ color: '#a0aec0' }}>
+        <Typography variant="body2" sx={{ color: 'text.disabled' }}>
           Upload a source to get started
         </Typography>
-        <Typography variant="caption" sx={{ color: '#cbd5e0' }}>
+        <Typography variant="caption" sx={{ color: 'text.disabled' }}>
           0 sources
         </Typography>
       </Box>

@@ -1,34 +1,62 @@
 import { createTheme } from '@mui/material/styles';
 
-// Add custom palette color
+// Extend palette with custom tokens
 declare module '@mui/material/styles' {
     interface Palette {
         custom: {
-            main: string;
+            sidebar: string;
+            userBubble: string;
+            surfaceHover: string;
+            surfaceSelected: string;
+            inputBg: string;
+            subtleText: string;
         };
     }
 
     interface PaletteOptions {
         custom?: {
-            main?: string;
+            sidebar?: string;
+            userBubble?: string;
+            surfaceHover?: string;
+            surfaceSelected?: string;
+            inputBg?: string;
+            subtleText?: string;
         };
     }
 }
 
+// Pure achromatic dark — no color, only grays
 export const theme = createTheme({
     palette: {
+        mode: 'dark',
         primary: {
-            main: '#2B6CB0',
+            main: '#C4C7CC',     // Light gray (used for buttons/accents)
+            dark: '#2C2D30',     // Dark gray (button hover)
+            light: '#E3E5E8',
         },
         secondary: {
-            main: '#718096',
+            main: '#8A8D93',
         },
         background: {
-            default: '#ffffff',
-            paper: '#f8fafc',
+            default: '#1F2023',  // Main canvas — dark charcoal
+            paper: '#2A2B2E',    // Panels, cards — slightly lighter
+        },
+        text: {
+            primary: '#E3E5E8',   // Near-white
+            secondary: '#9AA0A6', // Mid-gray
+            disabled: '#5F6368',  // Muted gray
+        },
+        divider: '#3C3D40',
+        error: {
+            main: '#F28B82',
         },
         custom: {
-            main: '#2B6CB0',
+            sidebar: '#17181B',       // Darkest — sidebar bg
+            userBubble: '#3C3D40',    // User message bubble — subtle gray
+            surfaceHover: '#2C2D30',  // Hover state
+            surfaceSelected: '#28292cff', // Selected state
+            inputBg: '#2A2B2E',       // Input bg = paper
+            subtleText: '#5F6368',    // Placeholder / disabled text
         },
     },
     typography: {
@@ -38,7 +66,11 @@ export const theme = createTheme({
         MuiCssBaseline: {
             styleOverrides: {
                 body: {
-                    backgroundColor: '#ffffff',
+                    backgroundColor: '#1F2023',
+                    scrollbarColor: '#3C3D40 #17181B',
+                    '&::-webkit-scrollbar': { width: 6 },
+                    '&::-webkit-scrollbar-track': { background: '#17181B' },
+                    '&::-webkit-scrollbar-thumb': { background: '#3C3D40', borderRadius: 3 },
                 },
             },
         },
@@ -46,7 +78,14 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     textTransform: 'none',
-                    fontWeight: 600,
+                    fontWeight: 500,
+                },
+            },
+        },
+        MuiDivider: {
+            styleOverrides: {
+                root: {
+                    borderColor: '#3C3D40',
                 },
             },
         },

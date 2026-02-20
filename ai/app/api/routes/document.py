@@ -7,8 +7,11 @@ from app.vector_store.faiss_store import add_documents_to_vector_store
 
 router = APIRouter()
 
+from fastapi import Form
+from typing import Optional
+
 @router.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(file: UploadFile = File(...), collection_name: Optional[str] = Form(None)):
     try:
         if not file.filename.endswith(".pdf"):
             raise HTTPException(status_code=400, detail="Only PDF files are allowed")
@@ -19,10 +22,10 @@ async def upload_file(file: UploadFile = File(...)):
 
         documents = load_pdf(temp_file_path)
         chunks = split_documents(documents)
-        add_documents_to_vector_store(chunks)
+        add_documents_to_vector_store(chunks, collection_name)
 
         os.remove(temp_file_path)
 
-        return {"message": "File processed and added to vector store", "chunks": len(chunks)}
+        return {"message": "File processed and added to vector store", "chunks": len(chunks), "collection_name": collection_name}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

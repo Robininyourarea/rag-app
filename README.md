@@ -28,6 +28,11 @@ This describes the AI RAG (Retrieval-Augmented Generation) Server, built with Fa
     ```
     This command will create a virtual environment and install all dependencies defined in `pyproject.toml` (or `requirements.txt`).
 
+3.  **Activate the virtual environment**:
+    ```powershell
+    .venv\Scripts\activate
+    ```
+
 ## Configuration
 
 1.  **Create a `.env` file** by copying the example:

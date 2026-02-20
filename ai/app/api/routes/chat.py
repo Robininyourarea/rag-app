@@ -4,18 +4,22 @@ from app.core.rag_chain import get_rag_chain
 
 router = APIRouter()
 
+from typing import Optional
+
 class ChatRequest(BaseModel):
     query: str
     session_id: str
+    collection_name: Optional[str] = None
 
 class ChatResponse(BaseModel):
     answer: str
     session_id: str
+    collection_name: Optional[str] = None
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     try:
-        rag_chain = get_rag_chain()
+        rag_chain = get_rag_chain(request.collection_name)
         if not rag_chain:
              raise HTTPException(status_code=400, detail="Vector store not initialized. Please upload a document first.")
         
@@ -24,6 +28,6 @@ async def chat(request: ChatRequest):
             config={"configurable": {"session_id": request.session_id}}
         )
         
-        return ChatResponse(answer=response, session_id=request.session_id)
+        return ChatResponse(answer=response, session_id=request.session_id, collection_name=request.collection_name)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

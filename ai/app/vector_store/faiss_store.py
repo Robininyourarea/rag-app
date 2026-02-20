@@ -8,36 +8,45 @@ from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
+# Path to the FAISS index (ai/faiss_index/)
 INDEX_PATH = "faiss_index"
 
-def get_vector_store():
+def get_index_path(collection_name:str=None):
+    if collection_name:
+        return os.path.join(INDEX_PATH, collection_name)
+    return os.path.join(INDEX_PATH, "default")
+
+def get_vector_store(collection_name:str=None):
     try:
         embedder = get_embedder()
-        if os.path.exists(INDEX_PATH):
-            return FAISS.load_local(INDEX_PATH, embedder, allow_dangerous_deserialization=True)
+        index_path = get_index_path(collection_name)
+        if os.path.exists(index_path):
+            return FAISS.load_local(index_path, embedder, allow_dangerous_deserialization=True)
         return None
     except Exception as e:
         logger.error(f"Error getting vector store: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-def create_vector_store(documents: List[Document]):
+def create_vector_store(documents: List[Document], collection_name:str=None):
     try:
         embedder = get_embedder()
         vector_store = FAISS.from_documents(documents, embedder)
-        vector_store.save_local(INDEX_PATH)
+        index_path = get_index_path(collection_name)
+        vector_store.save_local(index_path)
         return vector_store
     except Exception as e:
         logger.error(f"Error creating vector store: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-def add_documents_to_vector_store(documents: List[Document]):
+def add_documents_to_vector_store(documents: List[Document], collection_name:str=None):
     try:
-        vector_store = get_vector_store()
+        vector_store = get_vector_store(collection_name)
         if vector_store:
             vector_store.add_documents(documents)
-            vector_store.save_local(INDEX_PATH)
+            index_path = get_index_path(collection_name)
+            vector_store.save_local(index_path)
         else:
-            create_vector_store(documents)
+            create_vector_store(documents, collection_name)
     except Exception as e:
         logger.error(f"Error adding documents to vector store: {e}")
         raise HTTPException(status_code=500, detail=str(e))

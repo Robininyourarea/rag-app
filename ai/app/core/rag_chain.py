@@ -7,11 +7,11 @@ from app.config.config import settings
 from app.memory.mongo_memory import session_service
 from app.core.prompt import contextualize_q_prompt, qa_prompt
 
-def get_rag_chain():
+def get_rag_chain(collection_name:str=None):
     """
     Create and return the RAG chain with history.
     """
-    vector_store = get_vector_store()
+    vector_store = get_vector_store(collection_name)
     if not vector_store:
         return None
 
@@ -19,6 +19,7 @@ def get_rag_chain():
     
     llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=settings.GOOGLE_API_KEY)
 
+    # History aware retriever logic
     contextualize_q_chain = contextualize_q_prompt | llm | StrOutputParser()
 
     def contextualized_question(input: dict):

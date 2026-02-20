@@ -91,7 +91,7 @@ export default function Sidebar({
                         letterSpacing: -0.5,
                     }}
                 >
-                    ChatPDF
+                    Delph.ai
                 </Typography>
             </Box>
             <Divider />
@@ -104,7 +104,7 @@ export default function Sidebar({
                     startIcon={<AddIcon />}
                     onClick={handleNewDocument}
                     sx={{
-                        bgcolor: 'custom.surfaceSelected',
+                        bgcolor: 'custom.button',
                         color: 'text.primary',
                         borderRadius: '50px',
                         py: 1,

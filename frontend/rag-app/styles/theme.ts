@@ -4,6 +4,7 @@ import { createTheme } from '@mui/material/styles';
 declare module '@mui/material/styles' {
     interface Palette {
         custom: {
+            button: string;
             sidebar: string;
             userBubble: string;
             surfaceHover: string;
@@ -15,6 +16,7 @@ declare module '@mui/material/styles' {
 
     interface PaletteOptions {
         custom?: {
+            button?: string;
             sidebar?: string;
             userBubble?: string;
             surfaceHover?: string;
@@ -51,9 +53,10 @@ export const theme = createTheme({
             main: '#F28B82',
         },
         custom: {
+            button: '#e46a18ff',
             sidebar: '#17181B',       // Darkest — sidebar bg
             userBubble: '#3C3D40',    // User message bubble — subtle gray
-            surfaceHover: '#2C2D30',  // Hover state
+            surfaceHover: '#302e2cff',  // Hover state
             surfaceSelected: '#28292cff', // Selected state
             inputBg: '#2A2B2E',       // Input bg = paper
             subtleText: '#5F6368',    // Placeholder / disabled text

@@ -163,9 +163,9 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                 {/* Loading indicator */}
                 {loading && (
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
+                        {/* <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
                             <SmartToyIcon sx={{ fontSize: 18 }} />
-                        </Avatar>
+                        </Avatar> */}
                         <Box sx={{ display: 'flex', gap: 0.5, p: 1.5 }}>
                             {[0, 1, 2].map((i) => (
                                 <Box
@@ -207,7 +207,7 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                         gap: 1,
                         border: '1.5px solid',
                         borderColor: 'divider',
-                        borderRadius: '12px',
+                        borderRadius: '50px',
                         px: 2,
                         py: 0.5,
                         bgcolor: 'custom.inputBg',
@@ -221,12 +221,12 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
                         fullWidth
                         multiline
                         maxRows={4}
-                        placeholder="Send a message..."
+                        placeholder="Ask me anything ..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
                         variant="standard"
-                        InputProps={{ disableUnderline: true }}
+                        slotProps={{ input: { disableUnderline: true } }}
                         sx={{
                             '& .MuiInputBase-root': { fontSize: 14, color: 'text.primary' },
                             '& .MuiInputBase-input::placeholder': { color: 'text.disabled', opacity: 1 },

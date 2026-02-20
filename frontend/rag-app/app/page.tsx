@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { useDocumentContext } from '@/providers/DocumentContext';
@@ -114,6 +114,21 @@ function EmptyState({ onUpload }: { onUpload: (doc: UploadedDocument) => void })
 export default function Page() {
   const { uploadedDocs, selectedDoc, selectedSessionId, handleUpload, handleClosePreview } = useDocumentContext();
 
+  // displayDoc lags behind selectedDoc so PdfPreview stays mounted during close animation
+  const [displayDoc, setDisplayDoc] = useState(selectedDoc);
+  const [showPdf, setShowPdf] = useState(!!selectedDoc);
+
+  useEffect(() => {
+    if (selectedDoc) {
+      setDisplayDoc(selectedDoc);
+      setShowPdf(true);
+    } else {
+      setShowPdf(false);
+      const timer = setTimeout(() => setDisplayDoc(null), 320);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedDoc]);
+
   const hasDocuments = uploadedDocs.length > 0;
 
   if (!hasDocuments) {
@@ -122,12 +137,19 @@ export default function Page() {
 
   return (
     <>
-      {/* PDF Preview panel — shown when a document is selected */}
-      {selectedDoc && (
-        <Box sx={{ width: '50%', flexShrink: 0, overflow: 'hidden' }}>
-          <PdfPreview document={selectedDoc} onClose={handleClosePreview} />
-        </Box>
-      )}
+      {/* PDF Preview panel — slides in/out with CSS width transition */}
+      <Box
+        sx={{
+          width: showPdf ? '50%' : '0%',
+          flexShrink: 0,
+          overflow: 'hidden',
+          transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
+        {displayDoc && (
+          <PdfPreview document={displayDoc} onClose={handleClosePreview} />
+        )}
+      </Box>
 
       {/* Chat panel */}
       <Box sx={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>

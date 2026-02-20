@@ -12,7 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "ChatPDF",
+  title: "Delph.ai",
   description: "Chat with your PDF documents",
 };
 

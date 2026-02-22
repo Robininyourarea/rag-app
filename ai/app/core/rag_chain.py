@@ -4,7 +4,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from app.vector_store.faiss_store import get_vector_store
 from app.config.config import settings
-from app.memory.mongo_memory import session_service
+from app.core.memory import session_service
 from app.core.prompt import contextualize_q_prompt, qa_prompt
 from app.core.prompt import contextualize_q_prompt, qa_prompt
 from langchain_classic.chains import create_history_aware_retriever, create_retrieval_chain

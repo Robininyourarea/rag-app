@@ -100,15 +100,7 @@ class SessionService:
             db = client[settings.MONGO_INITDB_DATABASE]
             collection = db[settings.MONGODB_COLLECTION_CHAT_HISTORY]
             
-            # Create a temporary instance to get the key names
-            # Note: We can't access session_id_key directly from class or instance easily 
-            # without checking implementation, but standard usage relies on 'SessionId'.
-            # However, MongoDBChatMessageHistory stores sessions based on the session_id passed.
-            # Let's check how documents are stored. They usually have a SessionId field.
-            # Looking at source, it seems it uses 'SessionId' field by default or what is passed.
-            # The User provided code assumes `temp_history.session_id_key` exists. 
-            # I will trust the user provided code structure but wrapped in try-except.
-            
+            # Create a temporary instance to get the key names          
             temp_history = MongoDBChatMessageHistory(
                 connection_string=settings.MONGODB_URL,
                 database_name=settings.MONGO_INITDB_DATABASE,
@@ -116,15 +108,8 @@ class SessionService:
                 session_id="temp"
             )
             
-            # Get distinct session IDs
-            # The property might be 'session_id_key' or we assume a field name. 
-            # Creating an instance is safe.
-            session_id_key = "SessionId" # Default for MongoDBChatMessageHistory
-            
-            # The user code used `temp_history.session_id_key`, let's try to assume it works OR fix if not available.
-            # In latest langcahin-mongodb, it might just use JSON.
-            
-            session_ids = collection.distinct(session_id_key)
+            # Get unique session IDs
+            session_ids = collection.distinct(temp_history.session_id_key)
             
             # For each session, get the first and last message to show preview and timestamp
             sessions = []
@@ -133,44 +118,30 @@ class SessionService:
 
                 # Get first message timestamp (creation time)
                 first_message = collection.find_one(
-                    {session_id_key: session_id},
+                    {temp_history.session_id_key: session_id},
                     sort=[("_id", 1)]
                 )
                 
                 # Get last message for preview
                 last_message = collection.find_one(
-                    {session_id_key: session_id},
+                    {temp_history.session_id_key: session_id},
                     sort=[("_id", -1)]
                 )
                 
                 if first_message and last_message:
                     # Parse the message content
-                    try:
-                        # Depending on version it might be stringified JSON or dict
-                        history_key = "History" # Default
-                        content_data = last_message.get(history_key)
-                        if isinstance(content_data, str):
-                            last_message_content = json.loads(content_data)
-                        else:
-                            last_message_content = content_data
-                            
-                        preview_text = ""
-                        if isinstance(last_message_content, dict):
-                             preview_text = last_message_content.get("data", {}).get("content", "")
+                    last_message_content = json.loads(last_message[temp_history.history_key])
                         
-                        sessions.append({
-                            "session_id": session_id,
-                            "created_at": first_message.get("_id").generation_time.isoformat(), # Convert to string for JSON serialization
-                            "updated_at": last_message.get("_id").generation_time.isoformat(),
-                            "preview": preview_text[:50] + "...",
-                            "message_count": collection.count_documents({
-                                session_id_key: session_id
-                            })
+                    sessions.append({
+                        "session_id": session_id,
+                        "created_at": first_message.get("_id").generation_time.isoformat(), # Convert to string for JSON serialization
+                        "updated_at": last_message.get("_id").generation_time.isoformat(),
+                        "preview": last_message_content.get("data", {}).get("content", "")[:50] + "...",
+                        "message_count": collection.count_documents({
+                            temp_history.session_id_key: session_id
                         })
-                    except Exception as parse_error:
-                         logger.warning(f"Error parsing session {session_id}: {parse_error}")
+                    })
 
-            
             # Sort by most recent activity
             sessions.sort(key=lambda x: x["updated_at"], reverse=True)
             return sessions

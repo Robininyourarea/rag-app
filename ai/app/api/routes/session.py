@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.memory.mongo_memory import session_service
+from app.core.memory import session_service
 
 router = APIRouter()
 

@@ -7,13 +7,21 @@ import { useDocumentContext } from '@/providers/DocumentContext';
 import PdfPreview from '@/components/section/PdfPreview';
 import Chat from '@/components/section/Chat';
 import { UploadedDocument } from '@/types';
+import { uploadPdfFile } from '@/lib/api';
 
 function EmptyState({ onUpload }: { onUpload: (doc: UploadedDocument) => void }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    try {
+      await uploadPdfFile(file);
+    } catch (err) {
+      console.error('Upload failed:', err);
+    }
+
     const doc: UploadedDocument = {
       id: `doc-${Date.now()}`,
       name: file.name,
@@ -155,7 +163,6 @@ export default function Page() {
       <Box sx={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
         <Chat
           sessionId={selectedSessionId}
-          documentId={selectedDoc?.id}
         />
       </Box>
     </>

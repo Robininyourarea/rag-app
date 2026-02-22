@@ -3,9 +3,10 @@ import { ChatSession, ChatMessage } from '@/types';
 const AI_SERVER_BASE = process.env.NEXT_PUBLIC_AI_SERVER_URL || 'http://localhost:8000';
 
 // Upload a PDF file to the AI server
-export async function uploadPdfFile(file: File): Promise<{ document_id: string; filename: string }> {
+export async function uploadPdfFile(file: File, sessionId?: string): Promise<{ message: string; chunks: number; session_id: string }> {
     const formData = new FormData();
     formData.append('file', file);
+    if (sessionId) formData.append('session_id', sessionId);
 
     const res = await fetch(`${AI_SERVER_BASE}/api/documents`, {
         method: 'POST',
@@ -31,12 +32,11 @@ export async function fetchChatHistory(): Promise<ChatSession[]> {
 export async function sendChatMessage(
     message: string,
     sessionId?: string,
-    documentId?: string
-): Promise<{ session_id: string; reply: string }> {
+): Promise<{ session_id: string; answer: string }> {
     const res = await fetch(`${AI_SERVER_BASE}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, session_id: sessionId, document_id: documentId }),
+        body: JSON.stringify({ query: message, session_id: sessionId }),
     });
 
     if (!res.ok) {

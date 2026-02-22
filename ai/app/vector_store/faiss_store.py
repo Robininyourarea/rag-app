@@ -42,7 +42,9 @@ def add_documents_to_vector_store(documents: List[Document], collection_name:str
     try:
         vector_store = get_vector_store(collection_name)
         if vector_store:
-            vector_store.add_documents(documents)
+            embedder = get_embedder()
+            new_store = FAISS.from_documents(documents, embedder)
+            vector_store.merge_from(new_store)
             index_path = get_index_path(collection_name)
             vector_store.save_local(index_path)
         else:

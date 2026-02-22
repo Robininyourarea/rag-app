@@ -9,14 +9,13 @@ import { ChatMessage } from '@/types';
 
 interface ChatProps {
     sessionId?: string;
-    documentId?: string;
 }
 
 function formatTime(date: Date): string {
     return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 }
 
-export default function Chat({ sessionId, documentId }: ChatProps) {
+export default function Chat({ sessionId }: ChatProps) {
     const [messages, setMessages] = useState<ChatMessage[]>([
         {
             id: 'welcome',
@@ -53,14 +52,14 @@ export default function Chat({ sessionId, documentId }: ChatProps) {
         setLoading(true);
 
         try {
-            const res = await sendChatMessage(trimmed, currentSessionId, documentId);
+            const res = await sendChatMessage(trimmed, currentSessionId);
             if (res.session_id && !currentSessionId) {
                 setCurrentSessionId(res.session_id);
             }
             const aiMsg: ChatMessage = {
                 id: `ai-${Date.now()}`,
                 role: 'assistant',
-                content: res.reply,
+                content: res.answer,
                 timestamp: new Date(),
             };
             setMessages(prev => [...prev, aiMsg]);

@@ -17,6 +17,7 @@ import AddIcon from '@mui/icons-material/Add';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { UploadedDocument } from '@/types';
 import ChatHistory from '@/components/section/ChatHistory';
+import { uploadPdfFile } from '@/lib/api';
 
 interface SidebarProps {
     uploadedDocs: UploadedDocument[];
@@ -41,9 +42,15 @@ export default function Sidebar({
         fileInputRef.current?.click();
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
+
+        try {
+            await uploadPdfFile(file, selectedSessionId);
+        } catch (err) {
+            console.error('Upload failed:', err);
+        }
 
         const doc: UploadedDocument = {
             id: `doc-${Date.now()}`,

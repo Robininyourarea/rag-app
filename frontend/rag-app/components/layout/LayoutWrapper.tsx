@@ -13,10 +13,8 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
     const {
         uploadedDocs,
         selectedDoc,
-        selectedSessionId,
-        handleUpload,
         handleSelectDoc,
-        handleSelectSession,
+        clearDocuments,
     } = useDocumentContext();
 
     return (
@@ -25,10 +23,8 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
             <Sidebar
                 uploadedDocs={uploadedDocs}
                 selectedDocId={selectedDoc?.id}
-                selectedSessionId={selectedSessionId}
-                onUpload={handleUpload}
                 onSelectDoc={handleSelectDoc}
-                onSelectSession={handleSelectSession}
+                clearDocuments={clearDocuments}
             />
 
             {/* Main content — provided by the page as children */}

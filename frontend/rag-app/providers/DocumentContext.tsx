@@ -1,16 +1,15 @@
 'use client'
 
 import { createContext, useContext, useState, useCallback } from 'react';
-import { UploadedDocument, ChatSession } from '@/types';
+import { UploadedDocument } from '@/types';
 
 interface DocumentContextValue {
     uploadedDocs: UploadedDocument[];
     selectedDoc: UploadedDocument | null;
-    selectedSessionId: string | undefined;
     handleUpload: (doc: UploadedDocument) => void;
     handleSelectDoc: (doc: UploadedDocument) => void;
     handleClosePreview: () => void;
-    handleSelectSession: (sessionId: string, title: string) => void;
+    clearDocuments: () => void;
 }
 
 const DocumentContext = createContext<DocumentContextValue | null>(null);
@@ -24,7 +23,6 @@ export function useDocumentContext() {
 export function DocumentProvider({ children }: { children: React.ReactNode }) {
     const [uploadedDocs, setUploadedDocs] = useState<UploadedDocument[]>([]);
     const [selectedDoc, setSelectedDoc] = useState<UploadedDocument | null>(null);
-    const [selectedSessionId, setSelectedSessionId] = useState<string | undefined>(undefined);
 
     const handleUpload = useCallback((doc: UploadedDocument) => {
         setUploadedDocs(prev => [...prev, doc]);
@@ -39,8 +37,9 @@ export function DocumentProvider({ children }: { children: React.ReactNode }) {
         setSelectedDoc(null);
     }, []);
 
-    const handleSelectSession = useCallback((sessionId: string) => {
-        setSelectedSessionId(sessionId);
+    const clearDocuments = useCallback(() => {
+        setUploadedDocs([]);
+        setSelectedDoc(null);
     }, []);
 
     return (
@@ -48,11 +47,10 @@ export function DocumentProvider({ children }: { children: React.ReactNode }) {
             value={{
                 uploadedDocs,
                 selectedDoc,
-                selectedSessionId,
                 handleUpload,
                 handleSelectDoc,
                 handleClosePreview,
-                handleSelectSession,
+                clearDocuments,
             }}
         >
             {children}

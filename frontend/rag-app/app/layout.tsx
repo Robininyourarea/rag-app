@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
 import MuiThemeProvider from "@/providers/MuiThemeProvider";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -25,9 +26,11 @@ export default function RootLayout({
     <html lang="en" className={poppins.variable}>
       <body>
         <MuiThemeProvider>
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
+          <ErrorBoundary>
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </ErrorBoundary>
         </MuiThemeProvider>
       </body>
     </html>

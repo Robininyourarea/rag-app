@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import {
     Box,
     Button,
@@ -16,52 +16,26 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { UploadedDocument } from '@/types';
-import ChatHistory from '@/components/section/ChatHistory';
-import { uploadPdfFile } from '@/lib/api';
+import ChatHistory from '@/components/features/ChatHistory';
 
 interface SidebarProps {
     uploadedDocs: UploadedDocument[];
     selectedDocId?: string;
-    selectedSessionId?: string;
-    onUpload: (doc: UploadedDocument) => void;
     onSelectDoc: (doc: UploadedDocument) => void;
-    onSelectSession: (sessionId: string, title: string) => void;
+    clearDocuments: () => void;
 }
 
 export default function Sidebar({
     uploadedDocs,
     selectedDocId,
-    selectedSessionId,
-    onUpload,
     onSelectDoc,
-    onSelectSession,
+    clearDocuments,
 }: Readonly<SidebarProps>) {
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const router = useRouter();
 
-    const handleNewDocument = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
-
-        try {
-            await uploadPdfFile(file, selectedSessionId);
-        } catch (err) {
-            console.error('Upload failed:', err);
-        }
-
-        const doc: UploadedDocument = {
-            id: `doc-${Date.now()}`,
-            name: file.name,
-            url: URL.createObjectURL(file),
-            uploadedAt: new Date(),
-        };
-        onUpload(doc);
-
-        // Reset so same file can be selected again
-        e.target.value = '';
+    const handleNewChat = () => {
+        clearDocuments();
+        router.push('/');
     };
 
     return (
@@ -78,14 +52,6 @@ export default function Sidebar({
                 overflowY: 'hidden',
             }}
         >
-            {/* Hidden file input */}
-            <input
-                type="file"
-                accept=".pdf"
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-            />
 
             {/* Logo / App name */}
             <Box sx={{ px: 2.5, py: 1.32, flexShrink: 0 }}>
@@ -96,20 +62,22 @@ export default function Sidebar({
                         color: 'text.primary',
                         fontSize: 20,
                         letterSpacing: -0.5,
+                        cursor: 'pointer',
                     }}
+                    onClick={() => router.push('/')}
                 >
                     Delph.ai
                 </Typography>
             </Box>
             <Divider />
 
-            {/* New Document button */}
+            {/* New Chat button */}
             <Box sx={{ px: 2, pb: 1.5, pt: 1.5, flexShrink: 0 }}>
                 <Button
                     fullWidth
                     variant="contained"
                     startIcon={<AddIcon />}
-                    onClick={handleNewDocument}
+                    onClick={handleNewChat}
                     sx={{
                         bgcolor: 'custom.button',
                         color: 'text.primary',
@@ -128,7 +96,7 @@ export default function Sidebar({
                         },
                     }}
                 >
-                    New Document
+                    New Chat
                 </Button>
             </Box>
 
@@ -188,7 +156,7 @@ export default function Sidebar({
             )}
 
             {/* Chat History */}
-            <ChatHistory onSelectSession={onSelectSession} selectedSessionId={selectedSessionId} />
+            <ChatHistory clearDocuments={clearDocuments} />
         </Box>
     );
 }

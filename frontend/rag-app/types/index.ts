@@ -1,7 +1,7 @@
 export interface UploadedDocument {
     id: string;
     name: string;
-    url: string; // object URL for local preview
+    url: string;
     uploadedAt: Date;
 }
 
@@ -13,8 +13,9 @@ export interface ChatMessage {
 }
 
 export interface ChatSession {
-    id: string;
-    title: string;
-    createdAt: string;
-    updatedAt?: string;
+    session_id: string;
+    created_at: string;
+    updated_at: string;
+    preview: string;
+    message_count: number;
 }

@@ -3,6 +3,7 @@
 import { Box } from '@mui/material';
 import Sidebar from './Sidebar';
 import { DocumentProvider, useDocumentContext } from '@/providers/DocumentContext';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 interface LayoutWrapperProps {
     children: React.ReactNode;
@@ -38,9 +39,11 @@ function LayoutInner({ children }: { children: React.ReactNode }) {
 export default function LayoutWrapper({ children }: Readonly<LayoutWrapperProps>) {
     return (
         <DocumentProvider>
-            <LayoutInner>
-                {children}
-            </LayoutInner>
+            <ErrorBoundary>
+                <LayoutInner>
+                    {children}
+                </LayoutInner>
+            </ErrorBoundary>
         </DocumentProvider>
     );
 }
